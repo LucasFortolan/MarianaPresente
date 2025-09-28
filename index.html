@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presente Mariana - Seu Espaço para Memórias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Variáveis de Cores */
+        :root {
+            --cor-fundo: #ffffff;
+            --cor-texto-principal: #333333;
+            --cor-texto-secundario: #666666;
+            --cor-destaque: #a89a8c; /* Marrom-acinzentado para formas e botões */
+            --cor-arco-fundo: #2b3a42; /* Azul-escuro para o arco */
+            --cor-botao-claro: #f0f3f6; /* Fundo do botão Adicionar Item */
+            --cor-grid: #dddddd;
+            --cor-play-icon: #f00; /* Vermelho do YouTube */
+        }
+
+        /* Reset Básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--cor-texto-principal);
+            background-color: var(--cor-fundo);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- Seção de Imagem e Design (Esquerda) --- (Sem alterações significativas) */
+        .design-area {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            padding-right: 40px;
+            min-height: 550px;
+        }
+
+        .image-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* O Arco Escuro */
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 75%;
+            height: 100%;
+            background-color: var(--cor-arco-fundo);
+            border-radius: 0 0 50% 50%;
+            transform: rotate(180deg) translateX(25%);
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 70%);
+            z-index: 2;
+        }
+
+        /* A Grid no Fundo */
+        .image-container::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            width: 70%;
+            height: 80%;
+            border: 1px solid var(--cor-grid);
+            background-image: linear-gradient(to right, var(--cor-grid) 1px, transparent 1px),
+                              linear-gradient(to bottom, var(--cor-grid) 1px, transparent 1px);
+            background-size: 33.33% 33.33%;
+            z-index: 0;
+        }
+
+        .main-image {
+            position: absolute;
+            bottom: 0;
+            left: 35%;
+            width: 45%;
+            height: 85%;
+            object-fit: cover;
+            z-index: 3;
+            transform: translateX(-50%);
+            bottom: -5%;
+        }
+
+        /* Estrelas/Formas de Destaque */
+        .star-shape {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: var(--cor-destaque);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.7;
+            transform: rotate(20deg);
+        }
+
+        .star-top-left {
+            top: 5%;
+            left: 5%;
+        }
+
+        .star-bottom-right {
+            bottom: 10%;
+            right: -10%;
+            transform: rotate(200deg);
+            width: 40px;
+            height: 40px;
+            opacity: 0.5;
+            z-index: 10;
+        }
+        
+        /* Linha Tracejada Lateral */
+        .dashed-line {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background-image: linear-gradient(to bottom, var(--cor-grid) 5px, transparent 5px);
+            background-size: 100% 10px;
+            z-index: 1;
+            transform: translateX(200%);
+        }
+
+        /* --- Seção de Conteúdo (Direita) --- */
+        .content-area {
+            flex: 1;
+            min-width: 300px;
+            padding-left: 40px;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--cor-texto-principal);
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 30px;
+            max-width: 450px;
+        }
+
+        /* --- Estilos para o Container do Vídeo (agora um placeholder) --- */
+        .video-container {
+            margin-bottom: 30px;
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            padding-bottom: 56.25%; /* Proporção 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .video-link {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s;
+        }
+        
+        .video-link:hover .video-thumbnail {
+            opacity: 0.8; /* Efeito de hover */
+        }
+
+        /* Ícone de Play Estilizado */
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1; /* Alinhamento vertical do triângulo */
+            padding-left: 10px; /* Ajuste visual do triângulo */
+            transition: background-color 0.3s;
+        }
+        
+        .video-link:hover .play-icon {
+            background-color: var(--cor-play-icon);
+        }
+        
+        /* --- Botões de Ação --- */
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: var(--cor-texto-principal);
+        }
+
+        /* Botões pequenos de ícone */
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            background-color: transparent;
+            border: 1px solid var(--cor-grid);
+            font-size: 1.2rem;
+        }
+
+        .icon-button:hover {
+            background-color: var(--cor-fundo);
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        /* Botão principal 'Adicionar Item' */
+        .main-button {
+            padding: 10px 20px;
+            background-color: var(--cor-botao-claro);
+            color: var(--cor-texto-principal);
+            border: 1px solid var(--cor-grid);
+        }
+        
+        .main-button:hover {
+            background-color: #e6e9ec;
+        }
+
+        .icon-plus {
+            margin-right: 5px;
+        }
+        
+        /* Ícones */
+        .icon-youtube::before {
+            content: "\25b6";
+            margin-right: 5px;
+        }
+        
+        .icon-plus::before {
+            content: "+";
+            font-weight: 900;
+        }
+        
+        /* Media Query para responsividade em telas menores */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                padding-top: 60px;
+            }
+            
+            .design-area {
+                width: 100%;
+                min-height: 400px;
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .content-area {
+                width: 100%;
+                padding-left: 0;
+                text-align: center;
+            }
+            
+            .title, .description {
+                max-width: 100%;
+            }
+            
+            .actions {
+                justify-content: center;
+            }
+
+            .video-container {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            /* ... (Estilos de design-area para mobile mantidos) ... */
+            .image-container::before {
+                width: 100%;
+                transform: rotate(180deg) translateX(0);
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 0 85%);
+            }
+            
+            .main-image {
+                left: 50%;
+                width: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .dashed-line {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <section class="design-area">
+            
+        <div class="image-container">
+            <img 
+                src="https://instagram.fqps2-1.fna.fbcdn.net/v/t51.29350-15/491442077_553016847416408_5062021637882144384_n.heic?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjE0NDB4MTQ0MC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UuYzIifQ&_nc_ht=instagram.fqps2-1.fna.fbcdn.net&_nc_cat=108&_nc_oc=Q6cZ2QGdLubuQGJTRC7pfqzUW8BfggDtPIjnLwsexktFy5YxGAFZwWkIm-QW6OIdpSnf8SA&_nc_ohc=dQ82i-tZg1wQ7kNvwE5l1Vn&_nc_gid=LnpDO5FXE3EGZ95ef5-_fQ&edm=APoiHPcBAAAA&ccb=7-5&ig_cache_key=MzYxMjgxMDY5MjQxNzQ5ODA5Nw%3D%3D.3-ccb7-5&oh=00_AfbnIetgP3ww_8YrFjLz6tGGD35gxZuUSSQcaZrGY2itqw&oe=68DD0B54&_nc_sid=22de04" 
+                class="main-image"
+            >
+        </div>
+            
+            <div class="star-shape star-top-left"></div>
+            <div class="star-shape star-bottom-right"></div>
+            <div class="dashed-line"></div>
+        </section>
+
+        <section class="content-area">
+            
+            <h1 class="title">
+                Presente Mariana
+            </h1>
+            
+            <p class="description">
+                Bem-vinda ao Presente Mariana, onde a beleza da recordação se encontra onde algumas pessoas que você impactou de alguma forma durante sua carreia espiritual para te agradecer.
+            </p>
+
+            <div class="video-container">
+                <a href="https://youtu.be/B1xZUT6qovY?list=RDB1xZUT6qovY" target="_blank" class="video-link">
+                    <div class="play-icon">&#9654;</div> 
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
